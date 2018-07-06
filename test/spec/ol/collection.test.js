@@ -353,6 +353,27 @@ describe('ol.collection', function() {
       expect(call).to.throwException();
     });
 
+    describe('clear', function() {
+      it('removes all elements and dispatches events', function() {
+        const collection = new Collection(['a', 'b']);
+        const cb = sinon.spy();
+        listen(collection, CollectionEventType.REMOVE, cb);
+        collection.clear();
+        expect(cb).to.be.called();
+        expect(cb.firstCall.args[0].element).to.eql('b');
+        expect(cb.secondCall.args[0].element).to.eql('a');
+      });
+
+
+      it('removes all elements without dispatching events', function() {
+        const collection = new Collection(['a', 'b']);
+        const cb = sinon.spy();
+        listen(collection, CollectionEventType.REMOVE, cb);
+        collection.clear(true);
+        expect(cb).not.to.be.called();
+      });
+    });
+
   });
 
 });

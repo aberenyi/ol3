@@ -98,9 +98,15 @@ inherits(Collection, BaseObject);
 
 /**
  * Remove all elements from the collection.
+ * @param {boolean=} opt_fast Skip dispatching {@link module:ol/Collection~CollectionEvent#remove} events.
  * @api
  */
-Collection.prototype.clear = function() {
+Collection.prototype.clear = function(opt_fast) {
+  if (opt_fast) {
+    this.array_.splice(0, this.getLength());
+    this.updateLength_();
+    return;
+  }
   while (this.getLength() > 0) {
     this.pop();
   }
